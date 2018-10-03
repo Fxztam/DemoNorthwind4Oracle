@@ -1,2 +1,2 @@
 # DemoNorthwind4Oracle
-Northwind database includes characters from European alphabets
+Northwind database contains characters from European alphabets
