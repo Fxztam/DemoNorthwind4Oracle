@@ -1,8 +1,49 @@
 
-PROMPT CATEGORIES ---
+PROMPT 'Create proc drop_object ---'
+BEGIN 
+    BEGIN 
+        EXECUTE IMMEDIATE 'drop procedure drop_object'; 
+        EXCEPTION WHEN OTHERS THEN NULL;
+    END;
+    BEGIN
+        EXECUTE IMMEDIATE '
+            CREATE PROCEDURE drop_object (p_type VARCHAR2, p_name VARCHAR2) IS 
+                BEGIN
+                    EXECUTE IMMEDIATE ''drop ''||p_type||''  ''||p_name; 
+                EXCEPTION WHEN OTHERS THEN NULL;
+            END drop_object;
+        '; 
+        EXCEPTION WHEN OTHERS THEN NULL;
+    END;
+END;
+/
 
-drop table CATEGORIES cascade constraint;
+PROMPT 'Drop objects ---'
+BEGIN
+    drop_object('table',    'CATEGORIES cascade constraint');
+    drop_object('sequence', 'SEQ_NW_CATEGORIES') ;
+    drop_object('table',    'CUSTOMERS  cascade constraint');
+    drop_object('sequence', 'SEQ_NW_CUSTOMERS');
+    drop_object('table',    'EMPLOYEES  cascade constraint');
+    drop_object('sequence', 'SEQ_NW_EMPLOYEES');
+    drop_object('table',    'SUPPLIERS  cascade constraint');
+    drop_object('sequence', 'SEQ_NW_SUPPLIERS');
+    drop_object('table',    'SHIPPERS  cascade constraint');
+    drop_object('sequence', 'SEQ_NW_SHIPPERS');
+    drop_object('table',    'PRODUCTS  cascade constraint');
+    drop_object('sequence', 'SEQ_NW_PRODUCTS');
+    drop_object('table',    'ORDERS  cascade constraint');
+    drop_object('sequence', 'SEQ_NW_ORDERS');
+    drop_object('table',    'ORDER_DETAILS  cascade constraint');
+END;
+/
 
+PROMPT 'User objects ---'
+select  OBJECT_NAME from user_objects;
+-- only :: DROP_OBJECT ??? --
+PROMPT '--- EO User objects ---'
+
+PROMPT 'Create CATEGORIES ---'
 CREATE TABLE CATEGORIES
 (
     CATEGORY_ID NUMBER(9) NOT NULL,
@@ -13,9 +54,6 @@ CREATE TABLE CATEGORIES
 );
 
 CREATE UNIQUE INDEX UIDX_CATEGORY_NAME ON CATEGORIES(CATEGORY_NAME);
-
-
-drop sequence SEQ_NW_CATEGORIES ;
 
 CREATE SEQUENCE SEQ_NW_CATEGORIES  
     MINVALUE 1
@@ -31,10 +69,7 @@ COMMENT ON COLUMN CATEGORIES.CATEGORY_NAME IS 'Name of food category.';
 COMMENT ON COLUMN CATEGORIES.PICTURE IS 'A picture representing the food category.';
 
 
-PROMPT CUSTOMERS ---
-
-drop table CUSTOMERS  cascade constraint;
-
+PROMPT 'Create CUSTOMERS ---'
 CREATE TABLE CUSTOMERS
 (
     CUSTOMER_ID NUMBER(9) NOT NULL,
@@ -58,9 +93,6 @@ CREATE INDEX IDX_CUSTOMERS_COMPANY_NAME ON CUSTOMERS(COMPANY_NAME);
 CREATE INDEX IDX_CUSTOMERS_POSTAL_CODE ON CUSTOMERS(POSTAL_CODE);
 CREATE INDEX IDX_CUSTOMERS_REGION ON CUSTOMERS(REGION);
 
-
-drop sequence SEQ_NW_CUSTOMERS;
-
 CREATE SEQUENCE SEQ_NW_CUSTOMERS
     MINVALUE 1
     MAXVALUE 999999999999999999999999999
@@ -77,10 +109,7 @@ COMMENT ON COLUMN CUSTOMERS.PHONE IS 'Phone number includes country code or area
 COMMENT ON COLUMN CUSTOMERS.FAX IS 'Phone number includes country code or area code.';
 
 
-PROMPT EMPLOYEES ---
-
-drop table EMPLOYEES  cascade constraint;
-
+PROMPT 'EMPLOYEES ---'
 CREATE TABLE EMPLOYEES
 (
     EMPLOYEE_ID NUMBER(9) NOT NULL,
@@ -103,8 +132,7 @@ CREATE TABLE EMPLOYEES
     CONSTRAINT PK_EMPLOYEES PRIMARY KEY (EMPLOYEE_ID)
 );
 
-PROMPT Trigger ---
-
+PROMPT 'Trigger ---'
 CREATE INDEX IDX_EMPLOYEES_LASTNAME ON EMPLOYEES(LASTNAME);
 CREATE INDEX IDX_EMPLOYEES_POSTAL_CODE ON EMPLOYEES(POSTAL_CODE);
 
@@ -120,9 +148,6 @@ begin
     end if;
 end;
 /
-
-
-drop sequence SEQ_NW_EMPLOYEES;
 
 CREATE SEQUENCE SEQ_NW_EMPLOYEES
     MINVALUE 1
@@ -149,10 +174,7 @@ ALTER TABLE EMPLOYEES
 ADD CONSTRAINT FK_REPORTS_TO FOREIGN KEY (REPORTS_TO) REFERENCES EMPLOYEES(EMPLOYEE_ID);
 
 
-PROMPT SUPPLIERS ---
-
-drop table SUPPLIERS  cascade constraint;
-
+PROMPT 'SUPPLIERS ---'
 CREATE TABLE SUPPLIERS
 (
     SUPPLIER_ID NUMBER(9) NOT NULL,
@@ -174,8 +196,6 @@ CREATE INDEX IDX_SUPPLIERS_COMPANY_NAME ON SUPPLIERS(COMPANY_NAME);
 CREATE INDEX IDX_SUPPLIERS_POSTAL_CODE ON SUPPLIERS(POSTAL_CODE);
 
 
-drop sequence SEQ_NW_SUPPLIERS;
-
 CREATE SEQUENCE SEQ_NW_SUPPLIERS
     MINVALUE 1
     MAXVALUE 999999999999999999999999999
@@ -193,8 +213,7 @@ COMMENT ON COLUMN SUPPLIERS.FAX IS 'Phone number includes country code or area c
 COMMENT ON COLUMN SUPPLIERS.HOME_PAGE IS 'Supplier''s home page on World Wide Web.';
 
 
-drop table SHIPPERS  cascade constraint;
-
+PROMPT 'shippers ---'
 CREATE TABLE SHIPPERS
 (
     SHIPPER_ID NUMBER(9) NOT NULL,
@@ -203,7 +222,6 @@ CREATE TABLE SHIPPERS
     CONSTRAINT PK_SHIPPERS PRIMARY KEY (SHIPPER_ID)
 );
 
-drop sequence SEQ_NW_SHIPPERS;
 
 CREATE SEQUENCE SEQ_NW_SHIPPERS
     MINVALUE 1
@@ -219,10 +237,7 @@ COMMENT ON COLUMN SHIPPERS.COMPANY_NAME IS 'Name of shipping company.';
 COMMENT ON COLUMN SHIPPERS.PHONE IS 'Phone number includes country code or area code.';
 
 
-PROMPT PRODUCTS ---
-
-drop table PRODUCTS  cascade constraint;
-
+PROMPT 'PRODUCTS ---'
 CREATE TABLE PRODUCTS
 (
     PRODUCT_ID NUMBER(9) NOT NULL,
@@ -243,7 +258,6 @@ CREATE TABLE PRODUCTS
 CREATE INDEX IDX_PRODUCTS_CATEGORY_ID ON PRODUCTS(CATEGORY_ID);
 CREATE INDEX IDX_PRODUCTS_SUPPLIER_ID ON PRODUCTS(SUPPLIER_ID);
 
-drop sequence SEQ_NW_PRODUCTS;
 
 CREATE SEQUENCE SEQ_NW_PRODUCTS
     MINVALUE 1
@@ -262,10 +276,7 @@ COMMENT ON COLUMN PRODUCTS.REORDER_LEVEL IS 'Minimum units to maintain in stock.
 COMMENT ON COLUMN PRODUCTS.DISCONTINUED IS 'Yes means item is no longer available.';
 
 
-PROMPT ORDERS ---
-
-drop table ORDERS  cascade constraint;
-
+PROMPT 'ORDERS ---'
 CREATE TABLE ORDERS
 (
     ORDER_ID NUMBER(9) NOT NULL,
@@ -295,7 +306,6 @@ CREATE INDEX IDX_ORDERS_ORDER_DATE ON ORDERS(ORDER_DATE);
 CREATE INDEX IDX_ORDERS_SHIPPED_DATE ON ORDERS(SHIPPED_DATE);
 CREATE INDEX IDX_ORDERS_SHIP_POSTAL_CODE ON ORDERS(SHIP_POSTAL_CODE);
 
-drop sequence SEQ_NW_ORDERS;
 
 CREATE SEQUENCE SEQ_NW_ORDERS
     MINVALUE 1
@@ -315,10 +325,7 @@ COMMENT ON COLUMN ORDERS.SHIP_ADDRESS IS 'Street address only -- no post-office 
 COMMENT ON COLUMN ORDERS.SHIP_REGION IS 'State or province.';
 
 
-PROMPT ORDER_DETAILS ---
-
-drop table ORDER_DETAILS  cascade constraint;
-
+PROMPT 'ORDER_DETAILS ---'
 CREATE TABLE ORDER_DETAILS
 (
     ORDER_ID NUMBER(9) NOT NULL,
@@ -336,7 +343,16 @@ CREATE INDEX IDX_ORDER_DETAILS_PRODUCT_ID ON ORDER_DETAILS(PRODUCT_ID);
 COMMENT ON COLUMN ORDER_DETAILS.ORDER_ID IS 'Same as Order ID in Orders table.';
 COMMENT ON COLUMN ORDER_DETAILS.PRODUCT_ID IS 'Same as Product ID in Products table.';
 
-PROMPT ENDE
+
+PROMPT 'Drop proc drop_object ---'
+BEGIN 
+    EXECUTE IMMEDIATE 'drop procedure drop_object'; 
+    EXCEPTION WHEN OTHERS THEN NULL;
+END;
+/
+
+PROMPT '--- ENDE ---'
+
 
 
 
