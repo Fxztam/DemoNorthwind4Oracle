@@ -5,4 +5,3 @@ Northwind demo database contains characters from European alphabets:
 - incl. 'drop tables & sequences' so you can re-enter @cr_northwind.sql
 - is applicable for front-end applications with full stack tests e.g. Oracle Forms.
 
-##2020-02-24: 'drop_object' procedure to 'drop tables & sequences' .
