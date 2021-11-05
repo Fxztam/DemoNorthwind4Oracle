@@ -1,3 +1,5 @@
+PROMPT 'Set for escaping `&` ---'
+SET DEFINE OFF
 
 PROMPT 'Create proc drop_object ---'
 BEGIN 
