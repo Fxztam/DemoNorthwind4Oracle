@@ -1,4 +1,7 @@
-﻿
+
+PROMPT 'Set for escaping `&` ---'
+SET DEFINE OFF
+
 
 Insert into CATEGORIES(CATEGORY_ID, CATEGORY_NAME, DESCRIPTION, PICTURE)
 Values(1, 'Beverages', 'Soft drinks, coffees, teas, beers, and ales', 'beverages.gif');
