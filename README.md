@@ -6,3 +6,4 @@ Northwind demo database contains characters from European alphabets:
 - is applicable for front-end applications with full stack tests e.g. Oracle Forms.
 - drop_object procedure to 'drop tables & sequences'.
 
+Tip: Since April 2023 you can use in Oracle Databse 23c cr_Northwind-4-23c.sql.
