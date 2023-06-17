@@ -11,9 +11,9 @@ drop table	IF EXISTS 	SUPPLIERS  		cascade constraint;
 drop table	IF EXISTS 	SHIPPERS  		cascade constraint;
 drop table	IF EXISTS 	PRODUCTS  		cascade constraint;
 drop table	IF EXISTS 	ORDERS  		cascade constraint;
-drop table	IF EXISTS 	ORDER_DETAILS  	cascade constraint;
+drop table	IF EXISTS 	ORDER_DETAILS  		cascade constraint;
 
-drop sequence	  IF EXISTS 	SEQ_NW_CATEGORIES;
+drop sequence	IF EXISTS 	SEQ_NW_CATEGORIES;
 drop sequence 	IF EXISTS 	SEQ_NW_CUSTOMERS;
 drop sequence 	IF EXISTS 	SEQ_NW_EMPLOYEES;
 drop sequence 	IF EXISTS 	SEQ_NW_SUPPLIERS;
