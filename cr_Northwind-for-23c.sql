@@ -323,11 +323,6 @@ COMMENT ON COLUMN ORDER_DETAILS.ORDER_ID IS 'Same as Order ID in Orders table.';
 COMMENT ON COLUMN ORDER_DETAILS.PRODUCT_ID IS 'Same as Product ID in Products table.';
 
 
-PROMPT 'Drop proc drop_object ---'
-BEGIN 
-    EXECUTE IMMEDIATE 'drop procedure drop_object'; 
-    EXCEPTION WHEN OTHERS THEN NULL;
-END;
 /
 
 PROMPT '--- ENDE ---'
